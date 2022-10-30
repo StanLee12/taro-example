@@ -1,7 +1,7 @@
 import { Component, PropsWithChildren } from 'react'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import Tree from '../../components/index'
+import Tree from '../../components/taro-tree/index'
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.scss'
