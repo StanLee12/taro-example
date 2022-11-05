@@ -4,7 +4,6 @@ import { View, Text } from '@tarojs/components'
 import TreeItem from './TreeItem'
 import { ITree } from './interface'
 
-
 export default class Tree extends Component<ITree> {
 
   static options = {

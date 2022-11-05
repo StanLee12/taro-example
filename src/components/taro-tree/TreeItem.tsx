@@ -71,6 +71,34 @@ export default class TreeItem extends Component<ITreeItem, ITreeItemState> {
     onChange(value)
   }
 
+  handleChildren = (children, selectedList) => {
+    children.forEach((child: any) => {
+      selectedList.push(child.value)
+      if (Array.isArray(child.children) && child.children.length > 0) {
+        this.handleChildren(child.children, selectedList)
+      }
+    })
+  }
+
+  handleMultipleChange = (selectedList) => {
+    const { data, onChange } = this.props;
+    const { value, children } = data;
+    const hasChild = Array.isArray(children) && children.length > 0
+    if (!hasChild) {
+      onChange?.(selectedList)
+      return
+    }
+    let _selectedList: any = [...selectedList];
+    const isInList = selectedList.find((item) => item === value)
+    if (isInList ) {
+      this.handleChildren(children, _selectedList)
+    } else {
+      _selectedList = _selectedList.filter((item) => !item.startsWith(value))
+    }
+    const newSelectedList = Array.from(new Set(_selectedList))
+    onChange?.(newSelectedList)
+  }
+
   render() {
     const { visible, loading } = this.state
     const { selectedValue, onChange, multiple, data, treeDefaultExpandAll, loadData } = this.props
@@ -89,7 +117,7 @@ export default class TreeItem extends Component<ITreeItem, ITreeItemState> {
                 value,
                 disabled,
               }]}
-              onChange={onChange}
+              onChange={(value) => { this.handleMultipleChange(value) }}
               selectedList={selectedValue||[]}
             />)}
           {/* 单选树 */}

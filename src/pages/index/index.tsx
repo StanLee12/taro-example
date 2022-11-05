@@ -60,7 +60,27 @@ const dataSource = [
 			},
 			{
 				label: '果汁',
-				value: '4.2'
+				value: '4.2',
+				children: [
+					{
+						label: '汇源',
+						value: '4.2.1',
+						children: [
+							{
+								label: '4.2.1.1',
+								value: '4.2.1.1'
+							},
+							{
+								label: '4.2.1.2',
+								value: '4.2.1.2'
+							}
+						]
+					},
+					{
+						label: '康师傅',
+						value: '4.2.2'
+					}
+				]
 			}
 		]
 	}
@@ -82,7 +102,7 @@ export default class Index extends Component<PropsWithChildren> {
   componentDidHide () { }
 
   onChange = (value) => {
-	console.log('选中的值', value)
+	console.log('selected value ====', value)
 	this.setState({ value })
   }
 
