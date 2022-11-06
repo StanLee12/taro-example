@@ -80,11 +80,11 @@ export default class TreeItem extends Component<ITreeItem, ITreeItemState> {
     })
   }
 
-  handelRemoveChildren = (children, selectedSet) => {
+  handleRemoveChildren = (children, selectedSet) => {
     children.forEach((child: any) => {
       selectedSet.delete(child.value)
       if (Array.isArray(child.children) && child.children.length > 0) {
-        this.handelRemoveChildren(child.children, selectedSet)
+        this.handleRemoveChildren(child.children, selectedSet)
       }
     })
   }
@@ -101,7 +101,7 @@ export default class TreeItem extends Component<ITreeItem, ITreeItemState> {
     if (selectedSet.has(value) ) {
       this.handleAddChildren(children, selectedSet)
     } else {
-      this.handelRemoveChildren(children, selectedSet)
+      this.handleRemoveChildren(children, selectedSet)
     }
     onChange?.(Array.from(selectedSet))
   }
