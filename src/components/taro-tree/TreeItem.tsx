@@ -71,32 +71,39 @@ export default class TreeItem extends Component<ITreeItem, ITreeItemState> {
     onChange(value)
   }
 
-  handleChildren = (children, selectedList) => {
+  handleAddChildren = (children, selectedSet) => {
     children.forEach((child: any) => {
-      selectedList.push(child.value)
+      selectedSet.add(child.value)
       if (Array.isArray(child.children) && child.children.length > 0) {
-        this.handleChildren(child.children, selectedList)
+        this.handleAddChildren(child.children, selectedSet)
+      }
+    })
+  }
+
+  handelRemoveChildren = (children, selectedSet) => {
+    children.forEach((child: any) => {
+      selectedSet.delete(child.value)
+      if (Array.isArray(child.children) && child.children.length > 0) {
+        this.handelRemoveChildren(child.children, selectedSet)
       }
     })
   }
 
   handleMultipleChange = (selectedList) => {
-    const { data, onChange } = this.props;
-    const { value, children } = data;
+    const { data, onChange } = this.props
+    const { value, children } = data
     const hasChild = Array.isArray(children) && children.length > 0
     if (!hasChild) {
       onChange?.(selectedList)
       return
     }
-    let _selectedList: any = [...selectedList];
-    const isInList = selectedList.find((item) => item === value)
-    if (isInList ) {
-      this.handleChildren(children, _selectedList)
+    let selectedSet: any = new Set(selectedList);
+    if (selectedSet.has(value) ) {
+      this.handleAddChildren(children, selectedSet)
     } else {
-      _selectedList = _selectedList.filter((item) => !item.startsWith(value))
+      this.handelRemoveChildren(children, selectedSet)
     }
-    const newSelectedList = Array.from(new Set(_selectedList))
-    onChange?.(newSelectedList)
+    onChange?.(Array.from(selectedSet))
   }
 
   render() {
